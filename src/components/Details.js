@@ -11,7 +11,7 @@ export default function Details() {
 
   const postDetails = async () => {
     const fingerprint = await getCurrentBrowserFingerPrint();
-    const response = await fetch('http://localhost:8000/details', {
+    const response = await fetch('https://ecombackend-cjkq.onrender.com/details', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

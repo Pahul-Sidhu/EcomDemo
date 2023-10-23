@@ -11,7 +11,7 @@ export default function Cart() {
         localStorage.setItem('items', JSON.stringify(newCart));
 
         const fingerprint = await getCurrentBrowserFingerPrint();
-        const response = await fetch('http://localhost:8000/removecart', {
+        const response = await fetch('https://ecombackend-cjkq.onrender.com/removecart', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

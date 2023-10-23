@@ -5,9 +5,9 @@ import {getCurrentBrowserFingerPrint} from "@rajesh896/broprint.js";
 export default function Results() {
     const [count, setCount] = useState(0);
     const [products, setProducts] = useState([]);
-    const [cg, setCategory] = useState("general");
+    const [cg, setCategory] = useState("godfather");
 
-    const {key} = useParams();
+    const {key, type} = useParams();
 
     const addCart = (product) => {
       postCart(product);
@@ -36,7 +36,7 @@ export default function Results() {
 
     const addCategory = async (key) => {
       const fingerprint = await getCurrentBrowserFingerPrint();
-      const response = await fetch('http://localhost:8000/category', {
+      const response = await fetch('https://ecombackend-cjkq.onrender.com/category', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export default function Results() {
 
     const postCart = async (product) => {
       const fingerprint = await getCurrentBrowserFingerPrint();
-      const response = await fetch('http://localhost:8000/cart', {
+      const response = await fetch('https://ecombackend-cjkq.onrender.com/cart', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ export default function Results() {
 
     const pricePost = async (high, low) => {
       const fingerprint = await getCurrentBrowserFingerPrint();
-      const response = await fetch('http://localhost:8000/price', {
+      const response = await fetch('https://ecombackend-cjkq.onrender.com/price', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -74,6 +74,20 @@ export default function Results() {
 
     };
 
+    // const demoData = async (high, low) => {
+    //   const response = await fetch('https://ecombackend-cjkq.onrender.com/userData', {
+    //     method: 'GET',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     credentials: "include",
+        
+    //   });
+    //   const data = await response.json();
+    //   console.log(data);
+
+    // };
+
 
     const category = async (key) => {
         try {
@@ -82,7 +96,6 @@ export default function Results() {
               throw new Error('Network response was not ok');
             }
             const data = await response.json();
-            console.log(data);
             // Handle the data here
             setCount(data.totalItems);
             setProducts(data.items);
@@ -96,7 +109,7 @@ export default function Results() {
 
     const postSearch = async (searchValue) => {
       const fingerprint = await getCurrentBrowserFingerPrint();
-        const response = await fetch('http://localhost:8000/search', {
+        const response = await fetch('https://ecombackend-cjkq.onrender.com/search', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -110,7 +123,8 @@ export default function Results() {
     useEffect(() => {     
       //Identifying the user
       getCurrentBrowserFingerPrint().then(async (fingerprint) => {
-        var res = await fetch('http://localhost:8000/identify', {
+        window.fingerprint = fingerprint;
+        var res = await fetch('https://ecombackend-cjkq.onrender.com/identify', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -118,14 +132,29 @@ export default function Results() {
           body: JSON.stringify({"fp" : fingerprint}),
         });
         res = await res.json();
+      })
+
+      if(type === "yes") {
+        getCurrentBrowserFingerPrint().then(async (fingerprint) => {
+        var res = await fetch('https://ecombackend-cjkq.onrender.com/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ "email": localStorage.getItem("email"), "fp": fingerprint }),
+        });
+        res = await res.json();
+        console.log(res);
 
       })
+        console.log(type)
+      };
 
       // Fetch the data from the books API
         const fetchData = async () => {
             setProducts([]);
           try {
-            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${key === undefined ? cg : key}&key=AIzaSyAqRzhEsUQB3C2SRSrqIr_C7T6qWsglLYY`);
+            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${key === undefined || key === "nokey" ? cg : key}&key=AIzaSyAqRzhEsUQB3C2SRSrqIr_C7T6qWsglLYY`);
             
             const data = await response.json();
             // Handle the data here
@@ -139,7 +168,7 @@ export default function Results() {
       
         fetchData();
 
-        if(key !== undefined) {
+        if(key !== undefined && key !== "nokey") {
           postSearch(key);
         }
       }, [key]);

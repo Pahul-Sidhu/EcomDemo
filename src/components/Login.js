@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import {getCurrentBrowserFingerPrint} from "@rajesh896/broprint.js";
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -17,7 +18,7 @@ export default function Login() {
     setIsLogin(username !== '' && e.target.value !== '');
   };
 
-  const login = (e) => {
+  const login = async () => {
     if (username === '' || email === '') {
       alert('Please fill in all fields');
       return;
@@ -34,7 +35,7 @@ export default function Login() {
     setEmail('');
     setIsLogin(false);
   };
-
+  
   return (
     <div className="container">
       <h1 className="text-center m-3 p-3">Login</h1>
@@ -56,8 +57,8 @@ export default function Login() {
         />
 
         <div className="d-flex flex-row align-items-center mb-1">
-            <Link to='/'>
-            <button type="submit" onClick={login} className="btn btn-dark m-2 p-2">
+            <Link to='/search/nokey/yes'>
+            <button type="submit" className="btn btn-dark m-2 p-2" onClick={login}>
             Login
           </button>
             </Link>

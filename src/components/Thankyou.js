@@ -10,7 +10,7 @@ export default function Thankyou() {
 
     const postBuy = async () => {
       const fingerprint = await getCurrentBrowserFingerPrint();
-      const response = await fetch('http://localhost:8000/buy', {
+      const response = await fetch('https://ecombackend-cjkq.onrender.com/buy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -18,7 +18,7 @@ export default function Thankyou() {
         body: JSON.stringify({ "product": product, "fp": fingerprint }),
       });
       const data = await response.json();
-      console.log(data);
+      
     };
 
     useEffect(() => {

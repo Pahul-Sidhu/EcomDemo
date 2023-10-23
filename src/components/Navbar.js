@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import logo from './logo.jpg'
+import logo from '../images/logo.jpg'
 
 export default function Navbar(Category, page) {
     const [searchValue, setSearchValue] = React.useState("");
@@ -51,7 +51,7 @@ export default function Navbar(Category, page) {
                     <input type="search" id="form1" className="form-control" onChange={handleSearchInputChanges}/>
                     <label className="form-label" for="form1" style={{marginLeft: "0px"}}>Search</label>
                   <div className="form-notch"><div className="form-notch-leading" style={{width: "9px"}}></div><div className="form-notch-middle" style={{width: "47.2px"}}></div><div className="form-notch-trailing"></div></div></div>
-                  <Link to={`/search/${searchValue}`}>
+                  <Link to={`/search/${searchValue}/no`}>
                   <button type="button" className="btn btn-primary shadow-0">
                     <i className="fas fa-search"></i>
                   </button>
